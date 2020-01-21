@@ -5,12 +5,13 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 
 
-public class JmsProducer {
+public class JmsConsumerListen {
     //
     private final static String kActiveMqUrl = "tcp://192.168.154.101:61616";
     private final static String kQueueName = "queue01";
 
     public static void main(String[] args) throws Exception {
+        System.out.println("我是1号消费者");
         // 1. 创建连接工厂，按照给定的Url地址和默认的用户名、密码
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(kActiveMqUrl);
         // 2. 通过连接工厂，获取连接connection并启动
@@ -20,20 +21,27 @@ public class JmsProducer {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         // 4. 创建目的地（队列类型）
         Destination queue = session.createQueue(kQueueName);
-        // 5. 创建消息的生产者
-        MessageProducer producer = session.createProducer(queue);
-        // 6. 通过生产者生产6条消息发送到队列中
-        for (int i = 0; i< 6; i++){
-            // 7. 创建消息
-            TextMessage textMessage = session.createTextMessage("Message------ " + i);
-            // 8. 发送消息
-            producer.send(textMessage);
-        }
-        // 9. 释放资源
-        producer.close();
+        // 5. 创建消息的消费者
+        MessageConsumer consumer = session.createConsumer(queue);
+        // 6. 设置消息消费的监听者
+        consumer.setMessageListener(new MessageListener() {
+            public void onMessage(Message message) {
+                if( null != message && message instanceof TextMessage){
+                    TextMessage textMessage = (TextMessage) message;
+                    try {
+                        System.out.println("接收到的消息是：" + textMessage.getText());
+                    } catch (JMSException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        // 7. 暂停
+        System.in.read();
+        // 8. 释放资源
+        consumer.close();
         session.close();
         connection.close();
-
-        System.out.println("消息发送完毕>>>>>>>");
     }
 }

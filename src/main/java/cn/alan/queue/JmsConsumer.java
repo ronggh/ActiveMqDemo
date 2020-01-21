@@ -5,7 +5,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 
 
-public class JmsProducer {
+public class JmsConsumer {
     //
     private final static String kActiveMqUrl = "tcp://192.168.154.101:61616";
     private final static String kQueueName = "queue01";
@@ -20,20 +20,24 @@ public class JmsProducer {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         // 4. 创建目的地（队列类型）
         Destination queue = session.createQueue(kQueueName);
-        // 5. 创建消息的生产者
-        MessageProducer producer = session.createProducer(queue);
-        // 6. 通过生产者生产6条消息发送到队列中
-        for (int i = 0; i< 6; i++){
-            // 7. 创建消息
-            TextMessage textMessage = session.createTextMessage("Message------ " + i);
-            // 8. 发送消息
-            producer.send(textMessage);
+        // 5. 创建消息的消费者
+        MessageConsumer consumer = session.createConsumer(queue);
+        // 6. 消费消息
+        while (true) {
+            // receive()不带参数的方法会一直等待
+//            TextMessage message = (TextMessage) consumer.receive();
+            TextMessage message = (TextMessage) consumer.receive(4000L);
+            if (null != message) {
+                System.out.println("消费者接收到的消息：" + message.getText());
+            } else {
+                break;
+            }
         }
-        // 9. 释放资源
-        producer.close();
+        // 7. 释放资源
+        consumer.close();
         session.close();
         connection.close();
 
-        System.out.println("消息发送完毕>>>>>>>");
+        System.out.println("消息接收完毕>>>>>>>");
     }
 }
