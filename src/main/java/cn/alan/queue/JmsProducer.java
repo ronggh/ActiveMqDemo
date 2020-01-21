@@ -16,18 +16,35 @@ public class JmsProducer {
         // 2. 通过连接工厂，获取连接connection并启动
         Connection connection = factory.createConnection();
         connection.start();
-        // 3. 创建会话
+        // 3. 创建会话，有两个参数
+        // 第一个是否开启事务，开启事务，则需要手动session.commit()
+        // 第二个是签收,有三种方式:
+        // Session.AUTO_ACKNOWLEDGE,自动签收，默认方式
+        // Session.CLIENT_ACKNOWLEDGE，手动签收
+        // Session.DUPS_OK_ACKNOWLEDGE,允许重复消息
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
         // 4. 创建目的地（队列类型）
         Destination queue = session.createQueue(kQueueName);
         // 5. 创建消息的生产者
         MessageProducer producer = session.createProducer(queue);
+        // 可以设置消息的持久或非持久模式,队列模式默认是持久化的
+        // 非持久的消息在宕机时会丢失;持久化的消息在宕机时会保存
+//        producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
         // 6. 通过生产者生产6条消息发送到队列中
-        for (int i = 0; i< 6; i++){
+        for (int i = 0; i< 3; i++){
             // 7. 创建消息
             TextMessage textMessage = session.createTextMessage("Message------ " + i);
+            // 为第二条消息单独设一个属性
+            if( i%2 !=0 ){
+                textMessage.setStringProperty("c01","vip");
+            }
             // 8. 发送消息
             producer.send(textMessage);
+            // 发送Map类型的消息
+            MapMessage mapMessage = session.createMapMessage();
+            mapMessage.setString("key1","value"+i);
+            producer.send(mapMessage);
         }
         // 9. 释放资源
         producer.close();

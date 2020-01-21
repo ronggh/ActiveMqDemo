@@ -26,10 +26,21 @@ public class JmsConsumerListen {
         // 6. 设置消息消费的监听者
         consumer.setMessageListener(new MessageListener() {
             public void onMessage(Message message) {
+                // 处理普通文本类型的消息
                 if( null != message && message instanceof TextMessage){
                     TextMessage textMessage = (TextMessage) message;
                     try {
-                        System.out.println("接收到的消息是：" + textMessage.getText());
+                        System.out.println("接收到的文本消息是：" + textMessage.getText());
+                        System.out.println("接收到的文本消息属性是：" + textMessage.getStringProperty("c01"));
+                    } catch (JMSException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // 处理Map类型的消息
+                if( null != message && message instanceof MapMessage){
+                    MapMessage mapMessage = (MapMessage) message;
+                    try {
+                        System.out.println("接收到的Map消息是：" + mapMessage.getString("key1"));
                     } catch (JMSException e) {
                         e.printStackTrace();
                     }

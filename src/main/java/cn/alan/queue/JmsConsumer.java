@@ -29,6 +29,7 @@ public class JmsConsumer {
             TextMessage message = (TextMessage) consumer.receive(4000L);
             if (null != message) {
                 System.out.println("消费者接收到的消息：" + message.getText());
+
             } else {
                 break;
             }
