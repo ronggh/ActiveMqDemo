@@ -1,14 +1,14 @@
-package cn.alan.queue;
+package cn.alan.nio;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
 
-public class JmsConsumer {
+public class NioConsumer {
     //
-    private final static String kActiveMqUrl = "tcp://192.168.154.101:61616";
-    private final static String kQueueName = "queue01";
+    private final static String kActiveMqUrl = "nio://192.168.154.101:61618";
+    private final static String kQueueName = "nio-queue01";
 
     public static void main(String[] args) throws Exception {
         // 1. 创建连接工厂，按照给定的Url地址和默认的用户名、密码
@@ -17,7 +17,8 @@ public class JmsConsumer {
         Connection connection = factory.createConnection();
         connection.start();
         // 3. 创建会话
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        // 这里测试使用手动签收方式
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         // 4. 创建目的地（队列类型）
         Destination queue = session.createQueue(kQueueName);
         // 5. 创建消息的消费者
@@ -26,17 +27,12 @@ public class JmsConsumer {
         while (true) {
             // receive()不带参数的方法会一直等待
 //            TextMessage message = (TextMessage) consumer.receive();
-
-            Message message = consumer.receive(4000L);
-            if (null != message && message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
-                System.out.println("消费者接收到的文本消息：" + textMessage.getText());
-            }
-            else if( null != message && message instanceof MapMessage) {
-                MapMessage mapMessage = (MapMessage) message;
-                System.out.println("消费者接收到的Map消息：" + mapMessage.getString("key1"));
-            }
-            else {
+            TextMessage message = (TextMessage) consumer.receive(4000L);
+            if (null != message) {
+                System.out.println("使用Nio协议消费者接收到的消息：" + message.getText());
+                // 使用手动签收方式，必须写下面的签收代码
+                message.acknowledge();
+            } else {
                 break;
             }
         }
@@ -45,6 +41,6 @@ public class JmsConsumer {
         session.close();
         connection.close();
 
-        System.out.println("消息接收完毕>>>>>>>");
+        System.out.println("使用Nio协议消息接收完毕>>>>>>>");
     }
 }

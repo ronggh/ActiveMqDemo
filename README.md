@@ -9,7 +9,23 @@
 ## cn.alan.topic_persistent 持久化的topic
 ### JmsTopicProducerPersistent 持久化topic的生产者
 ## cn.alan.embed_broker 
-### EmbedBroker 嵌入式的Broker
+### EmbedBroker 嵌入式的Broker，可用此来代替ActiveMQ用于测试
+## cn.alan.nio  NIO协议下的编码
+    + 需要先修改配置文件
+    + ActiveMQ安装目录下conf/activemq.xml中<transportConnectors>节中增加
+    `
+    <transportConnector name="nio" uri="nio://0.0.0.0:61618?trace=true"/> 
+    `
+### NioProducer 使用NIO协议的生产者
+    + 需要修改协议地址为
+    `
+    nio://192.168.154.101:61618
+    `
+### NioConsumer 使用Nio 协议的消费者
+    + 需要修改协议地址为
+        `
+        nio://192.168.154.101:61618
+        `
 
 
 
