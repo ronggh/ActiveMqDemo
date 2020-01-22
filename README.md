@@ -25,7 +25,12 @@
     + 需要修改协议地址为
         `
         nio://192.168.154.101:61618
-        `
+     
+ ## cn.alan.jdbc_mysql 使用MySQL进行持久化
+ ### JdbcQueueProducer 队列模式的生产者
+ ### JdbcQueueConsumer 队列模式的消费者
+ ### JdbcTopicProducer 主题模式的生产者
+ ### JdbcTopicConsumer 主题模式的消费者
 
 
 
