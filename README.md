@@ -31,6 +31,8 @@
  ### JdbcQueueConsumer 队列模式的消费者
  ### JdbcTopicProducer 主题模式的生产者
  ### JdbcTopicConsumer 主题模式的消费者
+ ## cn.alan.cluster 使用MQ集群
+ ### ClusterProducer 
 
 
 
