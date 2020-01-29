@@ -33,6 +33,11 @@
  ### JdbcTopicConsumer 主题模式的消费者
  ## cn.alan.cluster 使用MQ集群
  ### ClusterProducer 
+ ### ClusterConsumer
+ ## an.alan.async_send 异步发送
+ ### AysncProducer
+ ## cn.alan.delay_schedule 延时投递和定时投递
+ 
 
 
 
