@@ -26,17 +26,32 @@
         `
         nio://192.168.154.101:61618
      
- ## cn.alan.jdbc_mysql 使用MySQL进行持久化
- ### JdbcQueueProducer 队列模式的生产者
- ### JdbcQueueConsumer 队列模式的消费者
- ### JdbcTopicProducer 主题模式的生产者
- ### JdbcTopicConsumer 主题模式的消费者
- ## cn.alan.cluster 使用MQ集群
- ### ClusterProducer 
- ### ClusterConsumer
- ## an.alan.async_send 异步发送
- ### AysncProducer
- ## cn.alan.delay_schedule 延时投递和定时投递
+## cn.alan.jdbc_mysql 使用MySQL进行持久化
+### JdbcQueueProducer 队列模式的生产者
+### JdbcQueueConsumer 队列模式的消费者
+### JdbcTopicProducer 主题模式的生产者
+### JdbcTopicConsumer 主题模式的消费者
+## cn.alan.cluster 使用MQ集群
+### ClusterProducer 
+### ClusterConsumer
+## an.alan.async_send 异步发送
+### AysncProducer
+## cn.alan.delay_schedule 延时投递和定时投递
+## cn.alan.spring 与Spring整合
+### resources目录下，创建applicatonContext.xml配置文件
+### SpringMqProducer Spring整合ActiveMQ的生产者
+### SpringMqConsumer Spring整合ActiveMQ的消费者
+### MyMessageListener 实现的消息监听类
+## SpringBootMqProducer 新建一个Maven模块，实现SpringBoot与MQ的整合的生产者
+### application.yml resources目录下，配置文件
+### ConfigBean 配置Bean
+### QueueProducer 队列生产者类
+### MainApp 主启动类
+### TestMQ 测试类，在test/java/cn.alan.bootactivemq包下
+## SpringBootMqConsumer 新建一个Maven模块，实现SpringBoot与MQ的整合的消费者
+### application.yml resources目录下，配置文件
+### QueueConsumer 队列消费者类
+### MainApp 主启动类 
  
 
 
